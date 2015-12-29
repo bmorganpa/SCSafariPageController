@@ -67,10 +67,6 @@
 	self.isZoomedOut = YES;
 	[self.pageViewController setLayouter:self.zoomedOutLayouter animated:animated completion:completion];
 	[self.pageViewController.scrollView setScrollEnabled:YES];
-	
-	for(SCSafariPageWrapperViewController *page in self.pageViewController.loadedViewControllers) {
-		[page setScrollEnabled:YES];
-	}
 }
 
 - (void)zoomIntoPageAtIndex:(NSUInteger)index animated:(BOOL)animated completion:(void(^)())completion
@@ -105,13 +101,7 @@
 
 - (UIViewController *)pageViewController:(SCPageViewController *)pageViewController viewControllerForPageAtIndex:(NSUInteger)pageIndex
 {
-	UIViewController *viewController = [self.dataSource pageController:self viewControllerForPageAtIndex:pageIndex];
-	
-	SCSafariPageWrapperViewController *safariPageViewController = [[SCSafariPageWrapperViewController alloc] initWithViewController:viewController];
-	[safariPageViewController setScrollEnabled:self.isZoomedOut];
-	[safariPageViewController setDelegate:self];
-	
-	return safariPageViewController;
+	return [self.dataSource pageController:self viewControllerForPageAtIndex:pageIndex];
 }
 
 #pragma mark - SCPageViewControllerDelegate
